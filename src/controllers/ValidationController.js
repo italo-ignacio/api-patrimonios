@@ -1,7 +1,3 @@
-class ValidationController {
-  async index(req, res) {
-    return res.status(200).json({ success: ["Successfully"] });
-  }
+export async function index_(req, res) {
+  return res.status(200).json({ message: "Successfully" });
 }
-
-export default new ValidationController();

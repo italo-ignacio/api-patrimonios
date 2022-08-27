@@ -1,0 +1,1019 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Patrimonies API",
+    "description": "API to manage users and their patrimonies",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/",
+      "description": "Test API"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "description": "Route to create a user",
+        "summary": "Create user",
+        "tags": ["User"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "Name"
+                  },
+                  "email": {
+                    "description": "E-mail"
+                  },
+                  "password": {
+                    "description": "Password"
+                  }
+                },
+                "required": ["name", "email", "password"]
+              },
+              "example": {
+                "name": "",
+                "email": "",
+                "password": ""
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Error to create the user",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Name field must be between 2 to 255 characters",
+                        "E-mail already exists",
+                        "Invalid e-mail",
+                        "Password field must be between 6 to 50 characters"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "message": "Successfully created"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Route to returns all users",
+        "summary": "List users",
+        "tags": ["User"],
+        "responses": {
+          "400": {
+            "description": "Error fetching users",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": ["Users not found"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "user": {
+                    "value": {
+                      "id": 1,
+                      "name": "Italo Felipe Ignacio",
+                      "email": "italo@gmail.com",
+                      "is_admin": false,
+                      "patrimonies": {
+                        "url": "http://localhost:8080/images/not_found.jpg",
+                        "id": 2,
+                        "name": "Mesa",
+                        "code": "0001",
+                        "note": "Mesa redonda",
+                        "details": "Mesa de vidro temperado",
+                        "filename": "not_found.jpg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "description": "Route to find user by id",
+        "summary": "Find user by id",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Error fetching user",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": ["User not found"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/User"
+                },
+                "examples": {
+                  "user": {
+                    "value": {
+                      "id": 1,
+                      "name": "Italo Felipe Ignacio",
+                      "email": "italo@gmail.com",
+                      "is_admin": false,
+                      "patrimonies": {
+                        "url": "http://localhost:8080/images/not_found.jpg",
+                        "id": 2,
+                        "name": "Mesa",
+                        "code": "0001",
+                        "note": "Mesa redonda",
+                        "details": "Mesa de vidro temperado",
+                        "filename": "not_found.jpg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Route to update user by id",
+        "summary": "Update user by id",
+        "tags": ["User"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "Name"
+                  },
+                  "email": {
+                    "description": "E-mail"
+                  },
+                  "password": {
+                    "description": "Password"
+                  }
+                },
+                "example": {
+                  "name": "",
+                  "email": "",
+                  "password": ""
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Error updating user",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "User not found",
+                        "Name field must be between 2 to 255 characters",
+                        "E-mail already exists",
+                        "Invalid e-mail",
+                        "Password field must be between 6 to 50 characters"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Token expired or invalid",
+                        "Login required",
+                        "Permission required"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "message": "Successfully updated"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Route to delete user by id",
+        "summary": "Delete user by id",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Error deleting user",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": ["User not found", "Failed to delete"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Token expired or invalid",
+                        "Login required",
+                        "Permission required"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "message": "Successfully deleted"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token": {
+      "post": {
+        "description": "Route to get token",
+        "summary": "Get token",
+        "tags": ["Token"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "description": "E-mail"
+                  },
+                  "password": {
+                    "description": "Password"
+                  }
+                },
+                "required": ["email", "password"]
+              },
+              "example": {
+                "email": "",
+                "password": ""
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Error to get token",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Invalid credentials",
+                        "User not found",
+                        "Invalid password"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "token": "User token",
+                      "User": {
+                        "name": "Italo Felipe Ignacio",
+                        "id": 1,
+                        "is_admin": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/patrimony": {
+      "post": {
+        "description": "Route to create a patrimony",
+        "summary": "Create patrimony",
+        "tags": ["Patrimony"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "Name"
+                  },
+                  "code": {
+                    "description": "Code"
+                  },
+                  "note": {
+                    "description": "Note"
+                  },
+                  "details": {
+                    "description": "Details"
+                  }
+                },
+
+                "required": ["name", "code"]
+              },
+              "example": {
+                "name": "",
+                "code": "",
+                "note": "",
+                "details": ""
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Error to create the patrimony",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Name field must be between 2 to 255 characters",
+                        "Code already exists",
+                        "Code field must be between 1 to 50 characters",
+                        "Note field must be between 0 to 1234 characters",
+                        "Details field must be between 0 to 2500 characters"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": ["Token expired or invalid", "Login required"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "message": "Successfully created"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Route to returns all patrimonies",
+        "summary": "List patrimonies",
+        "tags": ["Patrimony"],
+        "responses": {
+          "400": {
+            "description": "Error fetching patrimonies",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": ["Patrimonies not found"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Patrimony"
+                },
+                "examples": {
+                  "user": {
+                    "value": {
+                      "url": "http://localhost:8080/images/not_found.jpg",
+                      "id": 1,
+                      "name": "Mesa",
+                      "code": "0001",
+                      "note": "Mesa redonda",
+                      "details": "Mesa de vidro temperado",
+                      "owner": "Italo",
+                      "userId": 1,
+                      "filename": "not_found.jpg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/patrimony/{id}": {
+      "get": {
+        "description": "Route to find a patrimony by id",
+        "summary": "Find a patrimony",
+        "tags": ["Patrimony"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Patrimony id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Error fetching patrimony",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": ["Patrimony not found"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Patrimony"
+                },
+                "examples": {
+                  "user": {
+                    "value": {
+                      "url": "http://localhost:8080/images/not_found.jpg",
+                      "id": 1,
+                      "name": "Mesa",
+                      "code": "0001",
+                      "note": "Mesa redonda",
+                      "details": "Mesa de vidro temperado",
+                      "owner": "Italo",
+                      "userId": 1,
+                      "filename": "not_found.jpg"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Route to update a patrimony",
+        "summary": "Update patrimony",
+        "tags": ["Patrimony"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "Name"
+                  },
+                  "code": {
+                    "description": "Code"
+                  },
+                  "note": {
+                    "description": "Note"
+                  },
+                  "details": {
+                    "description": "Details"
+                  }
+                }
+              },
+              "example": {
+                "name": "",
+                "code": "",
+                "note": "",
+                "details": ""
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Patrimony id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Error updating patrimony",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Patrimony not found",
+                        "Name field must be between 2 to 255 characters",
+                        "Code already exists",
+                        "Code field must be between 1 to 50 characters",
+                        "Note field must be between 0 to 1234 characters",
+                        "Details field must be between 0 to 2500 characters"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Token expired or invalid",
+                        "Login required",
+                        "Permission required"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "message": "Successfully updated"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Route to delete a patrimony",
+        "summary": "Delete patrimony",
+        "tags": ["Patrimony"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Patrimony id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Error deleting patrimony",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": ["Patrimony not found", "Failed to delete"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Token expired or invalid",
+                        "Login required",
+                        "Permission required"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "message": "Successfully deleted"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/photo/{id}": {
+      "put": {
+        "description": "Route to update patrimony image",
+        "summary": "Update patrimony image",
+        "tags": ["Patrimony"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "photo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Patrimony id",
+            "required": true
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Error updating image",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": ["Patrimony not found", "Failed to save"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "error": {
+                    "value": {
+                      "errors": [
+                        "Token expired or invalid",
+                        "Login required",
+                        "Permission required"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "applcation/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "message": "Photo sent successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "is_admin": {
+            "type": "boolean"
+          },
+          "patrimonies": {
+            "type": "object",
+            "$ref": "#/components/schemas/Patrimony"
+          }
+        }
+      },
+      "Patrimony": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          },
+          "owner": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "number"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "required": true
+      }
+    }
+  }
+}

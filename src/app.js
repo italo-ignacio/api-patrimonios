@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
 import { resolve } from "path";
 import cors from "cors";
-import helmet, { crossOriginResourcePolicy } from "helmet";
+import helmet from "helmet";
+import swaggerUI from "swagger-ui-express";
+
+import swaggerDocs from "./swagger.json";
 
 dotenv.config();
 
@@ -13,7 +16,7 @@ import photoRoutes from "./routes/photoRoutes";
 import patrimonyRoutes from "./routes/patrimonyRoutes";
 import validationRoute from "./routes/validationRoutes";
 
-const whiteList = ["http://localhost:3000"];
+const whiteList = ["http://localhost:3000", "http://localhost:8080"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -51,6 +54,7 @@ class App {
     this.app.use("/photo", photoRoutes);
     this.app.use("/patrimony", patrimonyRoutes);
     this.app.use("/validate", validationRoute);
+    this.app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
   }
 }
 

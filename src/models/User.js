@@ -21,9 +21,10 @@ const User = sequelize.define(
       allowNull: false,
       defaultValue: "",
       unique: true,
+      unique: { msg: "E-mail already exists" },
       validate: {
         isEmail: {
-          msg: "Invalid email",
+          msg: "Invalid e-mail",
         },
       },
     },
@@ -64,7 +65,7 @@ const User = sequelize.define(
 User.prototype.passwordIsValid = function (password, password_hash) {
   return bcrypt.compare(password.toString(), password_hash);
 };
-// update tables
-// User.sync();
+
+User.sync();
 
 module.exports = User;
