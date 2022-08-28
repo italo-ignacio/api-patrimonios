@@ -7,9 +7,11 @@ export async function store_(req, res) {
     const { name } = user;
     const patrimony = req.body;
     patrimony["owner"] = name;
-    await user.createPatrimony(patrimony);
+    const patri = await user.createPatrimony(patrimony);
 
-    return res.status(200).json({ message: "Successfully created" });
+    return res
+      .status(200)
+      .json({ message: "Successfully created", id: patri.id });
   } catch (err) {
     return res.status(400).json({ errors: err.errors.map((er) => er.message) });
   }

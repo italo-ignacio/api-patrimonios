@@ -26,5 +26,5 @@ export async function store_(req, res) {
     expiresIn: process.env.TOKEN_EXPIRATION,
   });
 
-  return res.json({ token, user: { name: user.name, id, is_admin } });
+  return res.json({ token, user: { name: user.name, id, is_admin, email } });
 }
